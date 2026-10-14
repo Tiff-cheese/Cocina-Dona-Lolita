@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doña Lolita - Comida Corrida</title>
+    <!-- Aquí vinculamos el archivo CSS separado -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="encabezado">
+        <h1>Doña Lolita</h1>
+        <div class="frase">Comida corrida con sabor a casa</div>
+        <a href="PostresDL.HTML" style="display:inline-block; margin-top:15px; background:#f4c430; color:#006847; padding:10px 22px; border-radius:8px; text-decoration:none; font-weight:bold; border:2px solid white; font-family: Arial, sans-serif;">
+            🍰 VER MENÚ DE POSTRES
+        </a>
+    </div>
+
+    <div class="contenedor">
+        <div class="imagen-lateral">
+            <img src="Doña Lolita.jpeg" alt="Doña Lolita">
+            <div class="texto-lateral">¡Sazón casero!<br>Desde 1985 con amor</div>
+        </div>
+
+        <div class="menu">
+            <img src="ComidaAime.jpg" alt="comida Doña Lolita" class="imagen-lado">
+            <div class="titulo-menu">ARMA TU MENÚ</div>
+            <div id="seccion-sopa">
+                <h2>1. Sopa del día</h2>
+                <div class="platillo">Consomé de pollo <button onclick="elegir('sopa','Consomé de pollo',this)">Elegir</button></div>
+                <div class="platillo">Sopa de pasta <button onclick="elegir('sopa','Sopa de pasta',this)">Elegir</button></div>
+                <div class="platillo">Crema del día <button onclick="elegir('sopa','Crema del día',this)">Elegir</button></div>
+            </div>
+            <div id="seccion-guisado">
+                <h2>2. Guisado principal</h2>
+                <div class="platillo">Pollo en salsa verde <button onclick="elegir('guisado','Pollo en salsa verde',this)">Elegir</button></div>
+                <div class="platillo">Bistec a la mexicana <button onclick="elegir('guisado','Bistec a la mexicana',this)">Elegir</button></div>
+                <div class="platillo">Enchiladas <button onclick="elegir('guisado','Enchiladas',this)">Elegir</button></div>
+            </div>
+            <h2>3. Extras (+$)</h2>
+            <div class="platillo">Agua fresca 1L (+$25) <button onclick="addExtra('Agua 1L',25)">+ Agregar</button></div>
+            <div class="platillo">Postre del día (+$30) <button onclick="addExtra('Postre',30)">+ Agregar</button></div>
+            <div class="precio">Base $80</div>
+            <div class="cant-control">Cantidad: <button onclick="cambiarCant(-1)">-</button> <span id="cant">1</span> <button onclick="cambiarCant(1)">+</button></div>
+        </div>
+
+        <div class="carrito">
+            <h3>🛒 Tu Pedido</h3>
+            <div id="resumen">Aún no has elegido tu menú</div>
+            <div class="total-box" id="total">Total: $0</div>
+            <input type="text" id="nombre" placeholder="Tu nombre">
+            <input type="text" id="direccion" placeholder="Dirección o para recoger">
+            <select id="pago" onchange="mostrarDeposito()">
+                <option value="">Forma de pago...</option>
+                <option value="efectivo">Efectivo en entrega</option>
+                <option value="transferencia">Transferencia / Depósito</option>
+            </select>
+            <div id="datosDeposito" class="deposito"><b>Datos Doña Lolita:</b><br>Banco: BBVA<br>Tarjeta: 4152 3138 1234 5678<br>CLABE: 012 180 012345678901</div>
+            <button class="boton" onclick="ordenar()">ORDENAR AHORA</button>
+            <div id="mensaje"></div>
+        </div>
+    </div>
+
+    <div class="pie"><b>Doña Lolita</b><br>Comida casera - Comida corrida - Buen sabor | <a href="PostresDL.HTML" style="color:#f4c430; text-decoration:none; font-weight:bold;">Ver Postres 🍰</a></div>
+
+    <!-- El JavaScript se queda en el HTML dentro de script -->
+    <script>
+    let pedido = { sopa: [], guisado: [], extras: [], cantidad: 1 };
+    let base = 80;
+
+    function elegir(tipo, valor, btn){
+        let lista = pedido[tipo];
+        let index = lista.indexOf(valor);
+        if(index >= 0){
+            lista.splice(index, 1);
+            btn.classList.remove('activo');
+        } else {
+            lista.push(valor);
+            btn.classList.add('activo');
+        }
+        actualizar();
+    }
+
+    function addExtra(nombre, precio){ pedido.extras.push({nombre, precio}); actualizar(); }
+
+    function cambiarCant(n){
+        pedido.cantidad += n;
+        if(pedido.cantidad < 1) pedido.cantidad = 1;
+        document.getElementById('cant').innerText = pedido.cantidad;
+        actualizar();
+    }
+
+    function actualizar(){
+        if(pedido.sopa.length==0 && pedido.guisado.length==0 && pedido.extras.length==0){
+            document.getElementById('resumen').innerHTML="Aún no has elegido tu menú";
+            document.getElementById('total').innerText="Total: $0"; return;
+        }
+        let extrasTotal = pedido.extras.reduce((a,b)=>a+b.precio,0);
+        let total = (base + extrasTotal) * pedido.cantidad;
+        let html = `Sopa: ${pedido.sopa.length>0 ? pedido.sopa.join(', ') : 'No elegida'}<br>Guisado: ${pedido.guisado.length>0 ? pedido.guisado.join(', ') : 'No elegido'}<br>`;
+        if(pedido.extras.length>0){
+            html += `<br><b>Extras:</b><br>` + pedido.extras.map(e=>`- ${e.nombre} $${e.precio}`).join('<br>');
+            html += ` <button onclick="pedido.extras=[];actualizar()" style="font-size:11px;">quitar extras</button>`;
+        }
+        html += `<br><br>Cantidad: ${pedido.cantidad}`;
+        document.getElementById('resumen').innerHTML = html;
+        document.getElementById('total').innerText = `Total: $${total}`;
+    }
+
+    function mostrarDeposito(){
+        document.getElementById('datosDeposito').style.display = document.getElementById('pago').value === 'transferencia'? 'block' : 'none';
+    }
+
+    function ordenar(){
+        let extrasTotal = pedido.extras.reduce((a,b)=>a+b.precio,0);
+        let total = (base + extrasTotal) * pedido.cantidad;
+        if(pedido.sopa.length==0 || pedido.guisado.length==0) return alert("Por favor elige al menos una sopa y un guisado");
+        if(!document.getElementById('nombre').value) return alert("Pon tu nombre");
+        document.getElementById('mensaje').innerHTML = `¡Gracias ${document.getElementById('nombre').value}! Tu pedido por $${total} está en camino.`;
+        let w = `Hola Doña Lolita! Soy ${document.getElementById('nombre').value}%0APedido:%0A- Sopas: ${pedido.sopa.join(', ')}%0A- Guisados: ${pedido.guisado.join(', ')}%0A- Extras: ${pedido.extras.map(e=>e.nombre).join(', ') || 'Ninguno'}%0ACantidad: ${pedido.cantidad}%0ATOTAL: $${total}%0ADirección: ${document.getElementById('direccion').value}%0APago: ${document.getElementById('pago').value}`;
+        window.open(`https://wa.me/525639548144?text=${w}`, '_blank');
+    }
+    </script>
+</body>
+</html>

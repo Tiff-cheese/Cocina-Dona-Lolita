@@ -1,0 +1,26 @@
+body { background-color: #fff3d6; margin: 0; font-family: Arial, sans-serif; text-align: center; color: #333; }
+.encabezado { background-color: #006847; padding: 25px; border-bottom: 8px solid #ce1126; }
+h1 { color: white; font-family: Georgia, serif; font-size: 48px; margin: 5px; }
+h2 { color: #ce1126; font-family: "Trebuchet MS", sans-serif; font-size:18px; clear:both; }
+.frase { color: white; font-family: cursive; font-size: 20px; }
+.contenedor { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; max-width:1200px; margin:20px auto; align-items:flex-start; }
+.menu { width: 380px; padding: 25px; background-color: #fffdf5; border: 5px solid #f4c430; border-radius: 12px; box-shadow: 5px 5px 0px #ce1126; text-align:left; overflow:hidden; }
+.titulo-menu { color: #006847; font-family: Impact, sans-serif; font-size: 28px; text-align:center; margin-bottom:10px; }
+.platillo { font-family: "Trebuchet MS", sans-serif; font-size: 15px; padding: 9px 5px; border-bottom: 1px dashed #ce1126; display:flex; justify-content:space-between; align-items:center; }
+.platillo button { background:#f4c430; border:none; padding:4px 10px; border-radius:5px; cursor:pointer; font-weight:bold; }
+.platillo button.activo { background:#006847; color:white; }
+.precio { color: #ce1126; font-family: Georgia, serif; font-size: 32px; margin: 10px; text-align:center; }
+.boton { background-color: #006847; color: white; border: 3px solid #f4c430; padding: 12px 25px; border-radius: 8px; font-size: 18px; cursor: pointer; width:100%; margin-top:10px; }
+.boton:hover { background-color: #ce1126; }
+#mensaje { margin-top: 15px; color: #006847; font-weight:bold; text-align:center; }
+.carrito { width:350px; padding:25px; background:white; border:3px solid #006847; border-radius:12px; text-align:left; height: fit-content; }
+.total-box { font-size:22px; font-weight:bold; color:#ce1126; text-align:center; border-top:2px solid #f4c430; padding-top:10px; margin-top:10px; }
+.deposito { background:#fff3d6; border:1px dashed #006847; padding:10px; border-radius:8px; font-size:13px; margin-top:10px; display:none; }
+.pie { margin-top: 40px; padding: 18px; background-color: #ce1126; color: white; font-family: Georgia, serif; }
+.cant-control { display:flex; align-items:center; gap:8px; justify-content:center; margin:15px 0; }
+.cant-control button { width:35px; height:35px; font-size:18px; border-radius:50%; border:2px solid #006847; background:white; cursor:pointer; }
+input, select { width:100%; padding:9px; margin:6px 0; border-radius:6px; border:1px solid #ccc; box-sizing:border-box; }
+.imagen-lado { width: 140px; height: 140px; object-fit: cover; border: 4px solid #f4c430; border-radius: 12px; float: left; margin-right: 15px; margin-bottom: 10px; box-shadow: 3px 3px 0px #ce1126; }
+.imagen-lateral { width: 300px; }
+.imagen-lateral img { width: 100%; height: 450px; object-fit: cover; border: 5px solid #f4c430; border-radius: 12px; box-shadow: 5px 5px 0px #ce1126; background:white; }
+.texto-lateral { background-color: #006847; color: white; padding: 12px; border-radius: 8px; margin-top: 12px; font-family: cursive; font-size: 17px; border: 3px solid #f4c430; }

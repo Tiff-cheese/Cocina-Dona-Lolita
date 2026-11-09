@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doña Lolita - Postres</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="pagina-postres">
+    <div class="encabezado">
+        <h1>Doña Lolita</h1>
+        <div class="frase">Postres caseros con sabor a hogar</div>
+        <a href="index.HTML" class="btn-postres">← Volver a Comida Corrida</a>
+    </div>
+
+    <div class="contenedor">
+        <div class="imagen-lateral">
+            <img src="imágenes/postres.jpeg" alt="Doña Lolita Postres">
+            <div class="texto-lateral">¡Endulza tu día!<br>Postres 100% caseros</div>
+        </div>
+
+        <div class="menu">
+            <img src="imágenes/menu_postres.jpg" alt="Flan Doña Lolita" class="imagen-lado">
+            <div class="titulo-menu">ELIGE TU POSTRE</div>
+            <div id="seccion-postre">
+                <h2>1. Postre Principal</h2>
+                <div class="platillo">Pastel 3 Leches ($85) <button onclick="elegir('postre','Pastel 3 Leches',85,this)">Elegir</button></div>
+                <div class="platillo">Chocoflan ($90) <button onclick="elegir('postre','Chocoflan',90,this)">Elegir</button></div>
+                <div class="platillo">Carlota de Limón ($75) <button onclick="elegir('postre','Carlota de Limón',75,this)">Elegir</button></div>
+                <div class="platillo">Pastel Zanahoria ($85) <button onclick="elegir('postre','Pastel Zanahoria',85,this)">Elegir</button></div>
+            </div>
+            <div id="seccion-frio">
+                <h2>2. Postre Frío</h2>
+                <div class="platillo">Gelatina Mosaico ($60) <button onclick="elegir('frio','Gelatina Mosaico',60,this)">Elegir</button></div>
+                <div class="platillo">Flan Napolitano ($65) <button onclick="elegir('frio','Flan Napolitano',65,this)">Elegir</button></div>
+                <div class="platillo">Arroz con Leche ($55) <button onclick="elegir('frio','Arroz con Leche',55,this)">Elegir</button></div>
+            </div>
+            <h2>3. Extras (+$)</h2>
+            <div class="platillo">Cajeta extra (+$15) <button onclick="addExtra('Cajeta extra',15)">+ Agregar</button></div>
+            <div class="platillo">Fresas/Nuez (+$20) <button onclick="addExtra('Fresas/Nuez',20)">+ Agregar</button></div>
+            <div class="precio">Variado</div>
+            <div class="cant-control">Cantidad: <button onclick="cambiarCant(-1)">-</button> <span id="cant">1</span> <button onclick="cambiarCant(1)">+</button></div>
+        </div>
+
+        <div class="carrito">
+            <h3>🛒 Tu Pedido Dulce</h3>
+            <div id="resumen">Aún no has elegido</div>
+            <div class="total-box" id="total">Total: $0</div>
+            <input type="text" id="nombre" placeholder="Tu nombre">
+            <input type="text" id="direccion" placeholder="Dirección o para recoger">
+            <select id="pago" onchange="mostrarDeposito()">
+                <option value="">Forma de pago...</option>
+                <option value="efectivo">Efectivo en entrega</option>
+                <option value="transferencia">Transferencia / Depósito</option>
+            </select>
+            <div id="datosDeposito" class="deposito"><b>Datos Doña Lolita:</b><br>BBVA: 4152 3138 1234 5678</div>
+            <button class="boton" onclick="ordenar()">PEDIR POSTRE</button>
+            <div id="mensaje"></div>
+        </div>
+    </div>
+
+    <div class="pie"><b>Doña Lolita Postres</b><br>El postre que te hace volver</div>
+
+<script>
+let pedido = { postre: [], frio: [], extras: [], cantidad: 1 };
+
+function elegir(tipo, nombre, precio, btn){
+    let lista = pedido[tipo];
+    let index = lista.findIndex(item => item.nombre === nombre);
+    if(index >= 0){
+        lista.splice(index, 1);
+        btn.classList.remove('activo');
+    } else {
+        lista.push({nombre: nombre, precio: precio});
+        btn.classList.add('activo');
+    }
+    actualizar();
+}
+
+function addExtra(nombre, precio){ 
+    pedido.extras.push({nombre: nombre, precio: precio}); 
+    actualizar(); 
+}
+
+function cambiarCant(n){
+    pedido.cantidad += n;
+    if(pedido.cantidad < 1) pedido.cantidad = 1;
+    document.getElementById('cant').innerText = pedido.cantidad;
+    actualizar();
+}
+
+function actualizar(){
+    if(pedido.postre.length == 0 && pedido.frio.length == 0 && pedido.extras.length == 0){
+        document.getElementById('resumen').innerHTML = "Aún no has elegido";
+        document.getElementById('total').innerText = "Total: $0";
+        return;
+    }
+    
+    let totalPostres = pedido.postre.reduce((a,b)=>a+b.precio, 0);
+    let totalFrios = pedido.frio.reduce((a,b)=>a+b.precio, 0);
+    let totalExtras = pedido.extras.reduce((a,b)=>a+b.precio, 0);
+    
+    let subtotal = totalPostres + totalFrios + totalExtras;
+    let total = subtotal * pedido.cantidad;
+    
+    let html = `Principal: ${pedido.postre.length > 0 ? pedido.postre.map(p=>p.name || p.nombre).join(', ') : 'Ninguno'}<br>`;
+    html += `Frío: ${pedido.frio.length > 0 ? pedido.frio.map(f=>f.name || f.nombre).join(', ') : 'Ninguno'}<br>`;
+    
+    if(pedido.extras.length > 0){
+        html += `<br><b>Extras:</b><br>` + pedido.extras.map(e=>`- ${e.nombre} $${e.precio}`).join('<br>');
+        html += ` <button onclick="pedido.extras=[];actualizar()" style="font-size:11px;">quitar extras</button>`;
+    }
+    
+    html += `<br><br>Cantidad: ${pedido.cantidad}`;
+    document.getElementById('resumen').innerHTML = html;
+    document.getElementById('total').innerText = `Total: $${total}`;
+}
+
+function mostrarDeposito(){ 
+    document.getElementById('datosDeposito').style.display = document.getElementById('pago').value === 'transferencia' ? 'block' : 'none'; 
+}
+
+function ordenar(){
+    let totalPostres = pedido.postre.reduce((a,b)=>a+b.precio, 0);
+    let totalFrios = pedido.frio.reduce((a,b)=>a+b.precio, 0);
+    let totalExtras = pedido.extras.reduce((a,b)=>a+b.precio, 0);
+    let total = (totalPostres + totalFrios + totalExtras) * pedido.cantidad;
+
+    if(pedido.postre.length == 0 && pedido.frio.length == 0) return alert("Por favor elige al menos un postre");
+    if(!document.getElementById('nombre').value) return alert("Pon tu nombre");
+    
+    document.getElementById('mensaje').innerHTML = `¡Gracias ${document.getElementById('nombre').value}! Total $${total}`;
+    
+    let w = `Hola Doña Lolita Postres! Soy ${document.getElementById('nombre').value}%0APostres: ${pedido.postre.map(p=>p.nombre).join(', ') || 'Ninguno'}%0APostres Fríos: ${pedido.frio.map(f=>f.nombre).join(', ') || 'Ninguno'}%0AExtras: ${pedido.extras.map(e=>e.nombre).join(', ') || 'Ninguno'}%0ACantidad: ${pedido.cantidad}%0ATOTAL: $${total}%0ADirección: ${document.getElementById('direccion').value}%0APago: ${document.getElementById('pago').value}`;
+    window.open(`https://wa.me/525639548144?text=${w}`, '_blank');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+body {
+    background-color: #fffdf4;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    color: #444;
+}
+
+.encabezado {
+    background-color: #ffd166;
+    padding: 25px;
+    border-bottom: 8px solid #f9844a;
+}
+
+h1 {
+    color: white;
+    font-family: Georgia, serif;
+    font-size: 48px;
+    margin: 5px;
+}
+
+.frase {
+    color: white;
+    font-family: cursive;
+    font-size: 20px;
+}
+
+.btn-postres {
+    display: inline-block;
+    margin-top: 15px;
+    background: #f9844a;
+    color: white;
+    padding: 10px 22px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase;
+    border: 2px solid white;
+    font-family: Arial, sans-serif;
+}
+
+.btn-postres:hover {
+    background-color: #ffb5a7;
+}
+
+.seccion-extras {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 40px auto;
+    flex-wrap: wrap;
+}
+
+.btn-cuadrado {
+    width: 300px;
+    height: 150px;
+    background-color: #ffffff;
+    border: 5px solid #ffd166;
+    border-radius: 12px;
+    box-shadow: 5px 5px 0px #ffb5a7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 22px;
+    color: #f9844a;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.btn-cuadrado:hover {
+    background-color: #fff3b0;
+}
